@@ -1,6 +1,6 @@
 from django.contrib import auth
 from django.contrib.auth import authenticate, login
-from django.core.files.temp import NamedTemporaryFile
+from tempfile import TemporaryFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import transaction
 from django.db.utils import IntegrityError
@@ -279,13 +279,15 @@ def _get_old_connections(facebook_id, current_user_id=None):
 
 
 def _remove_old_connections(facebook_id, current_user_id=None):
-    '''
-    Removes the facebook id for profiles with the specified facebook id
-    which arent the current user id
-    '''
-    other_facebook_accounts = _get_old_connections(
-        facebook_id, current_user_id)
-    other_facebook_accounts.update(facebook_id=None)
+    #FIXME: Implement me.
+    pass
+    # '''
+    # Removes the facebook id for profiles with the specified facebook id
+    # which arent the current user id
+    # '''
+    # other_facebook_accounts = _get_old_connections(
+    #     facebook_id, current_user_id)
+    # other_facebook_accounts.update(facebook_id=None)
 
 
 def _update_user(user, facebook, overwrite=True):
@@ -367,7 +369,7 @@ def _update_image(facebook_id, image_url):
     Suggestions to improve this are welcome
     '''
     image_name = 'fb_image_%s.jpg' % facebook_id
-    image_temp = NamedTemporaryFile()
+    image_temp = TemporaryFile()
     image_response = urllib2.urlopen(image_url)
     image_content = image_response.read()
     image_temp.write(image_content)

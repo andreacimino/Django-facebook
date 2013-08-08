@@ -132,7 +132,7 @@ class FacebookUnreachable(OpenFacebookException):
     pass
 
 
-class FacebookSSLError(FacebookUnreachable, ssl.SSLError):
+class FacebookSSLError(FacebookUnreachable):
     pass
 
 

@@ -423,19 +423,20 @@ class FacebookUserConverter(object):
 
     @classmethod
     def _create_unique_username(cls, base_username):
-        '''
-        Check the database and add numbers to the username to ensure its unique
-        '''
-        usernames = list(
-            get_user_model().objects.filter(
-                username__istartswith=base_username
-            ).values_list('username', flat=True))
-        usernames_lower = [str(u).lower() for u in usernames]
-        username = str(base_username)
-        i = 1
-        while base_username.lower() in usernames_lower:
-            base_username = username + str(i)
-            i += 1
+        #FIXME: Implement this.
+        # '''
+        # Check the database and add numbers to the username to ensure its unique
+        # '''
+        # usernames = list(
+        #     get_user_model().objects.filter(
+        #         username__istartswith=base_username
+        #     ).values_list('username', flat=True))
+        # usernames_lower = [str(u).lower() for u in usernames]
+        # username = str(base_username)
+        # i = 1
+        # while base_username.lower() in usernames_lower:
+        #     base_username = username + str(i)
+        #     i += 1
         return base_username
 
     @classmethod
