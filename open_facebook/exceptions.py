@@ -3,7 +3,6 @@
 Facebook error classes also see
 http://fbdevwiki.com/wiki/Error_codes#User_Permission_Errors
 '''
-import ssl
 import urllib2
 
 
@@ -150,9 +149,7 @@ def map_unreachable_exception(e):
      - preserve backwards compatibility
     '''
     exception_class = FacebookUnreachable
-    if isinstance(e, ssl.SSLError):
-        exception_class = FacebookSSLError
-    elif isinstance(e, urllib2.HTTPError):
+    if isinstance(e, urllib2.HTTPError):
         exception_class = FacebookHTTPError
     elif isinstance(e, urllib2.URLError):
         exception_class = FacebookURLError

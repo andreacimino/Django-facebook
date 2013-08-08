@@ -92,7 +92,6 @@ import logging
 import urllib
 import urllib2
 from django_facebook.utils import to_int
-import ssl
 import re
 from urlparse import urlparse
 logger = logging.getLogger(__name__)
@@ -193,7 +192,7 @@ class FacebookConnection(object):
                         raise urllib2.URLError(
                             'Facebook is down %s' % response)
                 break
-            except (urllib2.HTTPError, urllib2.URLError, ssl.SSLError), e:
+            except (urllib2.HTTPError, urllib2.URLError), e:
                 # These are often temporary errors, so we will retry before
                 # failing
                 error_format = 'Facebook encountered a timeout (%ss) or error %s'
