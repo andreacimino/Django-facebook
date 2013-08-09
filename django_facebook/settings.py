@@ -26,6 +26,8 @@ FACEBOOK_STORE_FRIENDS = getattr(settings, 'FACEBOOK_STORE_FRIENDS', False)
 # if we should be using celery to do the above two,
 # recommended if you want to store friends or likes
 FACEBOOK_CELERY_STORE = getattr(settings, 'FACEBOOK_CELERY_STORE', False)
+
+FACEBOOK_APPENGINE_TASK_QUEUE_STORE = getattr(settings, 'FACEBOOK_APPENGINE_TASK_QUEUE_STORE', False)
 # use celery for updating tokens, recommended since it's quite slow
 FACEBOOK_CELERY_TOKEN_EXTEND = getattr(
     settings, 'FACEBOOK_CELERY_TOKEN_EXTEND', False)

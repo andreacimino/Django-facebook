@@ -495,6 +495,12 @@ class FacebookUserConverter(object):
         if facebook_settings.FACEBOOK_CELERY_STORE:
             from django_facebook.tasks import get_and_store_likes
             get_and_store_likes.delay(user, self)
+        elif facebook_settings.FACEBOOK_APPENGINE_TASK_QUEUE_STORE:
+            from google.appengine.api import taskqueue
+            logger.info("Starting appengine task queue")
+            taskqueue.add(url='/facebook/async/get_and_store_likes/', params = {"user_id" : user.pk})
+            logger.info("End appengine task queue")
+
         else:
             self._get_and_store_likes(user)
 
@@ -569,6 +575,12 @@ class FacebookUserConverter(object):
         if facebook_settings.FACEBOOK_CELERY_STORE:
             from django_facebook.tasks import get_and_store_friends
             get_and_store_friends.delay(user, self)
+        elif facebook_settings.FACEBOOK_APPENGINE_TASK_QUEUE_STORE:
+            from google.appengine.api import taskqueue
+            logger.info("Starting appengine task queue")
+            taskqueue.add(url='/facebook/async/get_and_store_friends/', params = {"user_id" : user.pk, "access_token" : self.open_facebook.access_token})
+            logger.info("End appengine task queue")
+
         else:
             self._get_and_store_friends(user)
 

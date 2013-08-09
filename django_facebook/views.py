@@ -12,9 +12,14 @@ from django_facebook.connect import CONNECT_ACTIONS, connect_user
 from django_facebook.decorators import facebook_required_lazy
 from django_facebook.utils import next_redirect, get_registration_backend, \
     to_bool, error_next_redirect, get_instance_for
-from open_facebook import exceptions as open_facebook_exceptions
+from django_facebook.connect import CONNECT_ACTIONS, connect_user
+from django_facebook.api import FacebookUserConverter
 from open_facebook.utils import send_warning
 import logging
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from open_facebook.api import OpenFacebook
+
 
 
 logger = logging.getLogger(__name__)
@@ -38,14 +43,13 @@ def connect(request, graph):
 
     try:
         response = _connect(request, graph)
-    except open_facebook_exceptions.FacebookUnreachable, e:
+    except Exception, e:
         # often triggered when Facebook is slow
         warning_format = u'%s, often caused by Facebook slowdown, error %s'
         warn_message = warning_format % (type(e), e.message)
         send_warning(warn_message, e=e)
         additional_params = dict(fb_error_or_cancel=1)
         response = backend.post_error(request, additional_params)
-
     return response
 
 
@@ -136,3 +140,21 @@ def disconnect(request):
 def example(request):
     context = RequestContext(request)
     return render_to_response('django_facebook/example.html', context)
+
+def _get_user_and_fb_converter(request):
+    user_id = request.POST['user_id']
+    access_token = request.POST['access_token']
+    user = User.objects.get(pk=user_id)
+    graph = OpenFacebook(access_token)
+    fb_converter = FacebookUserConverter(graph)
+    return user, fb_converter
+
+def fb_async_get_and_store_friends(request):
+    user, fb_converter = _get_user_and_fb_converter(request)
+    fb_converter._get_and_store_friends(user)
+    return HttpResponse("OK")
+
+def fb_async_get_and_store_likes(request):
+    user, fb_converter = _get_user_and_fb_converter(request)
+    fb_converter._get_and_store_friends(user)
+    return HttpResponse("OK")

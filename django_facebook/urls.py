@@ -10,6 +10,10 @@ urlpatterns = patterns(
     url(r'^disconnect/$',
         'disconnect', name='facebook_disconnect'),
     url(r'^example/$', 'example', name='facebook_example'),
+    url(r'^async/get_and_store_friends/$', 'fb_async_get_and_store_friends',
+        name='fb_async_get_and_store_friends'),
+   url(r'^async/get_and_store_likes/$', 'fb_async_get_and_store_likes',
+        name='fb_async_get_and_store_likes'),
 )
 
 dev_patterns = patterns(
